@@ -7,10 +7,11 @@
 # |   |____/ \___|_.__/|_|\__,_|_| |_| |_| |_| |_|\___/ \__\__,_(_)     |
 # |                                                                     |
 # |                                                                     |
-# | Copyright Alejandro Olivan 2016                 alex@alexolivan.com |
+# | Copyright Alejandro Olivan 2017                 alex@alexolivan.com |
 # +---------------------------------------------------------------------+
-# | A Check_mk agent to monitor elasticsearch 1.5 on Debian systems     |
-# | This file contains plugin agent definition .                        |
+# | A Script that enables a custom motd with system like on Ubuntu.     |
+# | The script needs to install stuff and modify some sys files.        |
+# | Use at absolutelly your own risk!                                   |
 # +---------------------------------------------------------------------+
 #
 # This program is free software; you can redistribute it and/or
@@ -54,7 +55,7 @@ if [ -d "/etc/update-motd.d" ]; then
 fi
 
 echo "OK... enter a cool word you want to appear as banner title"
-read MYBA
+read MYBANNER
 
 # create directory
 mkdir /etc/update-motd.d/
