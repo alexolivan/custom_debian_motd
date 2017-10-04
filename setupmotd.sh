@@ -47,7 +47,7 @@ if [ -d "/etc/update-motd.d" ]; then
 	while true; do
     	read -p "May I proceed and overwrite it?" yn
     	case $yn in
-        	[Yy]* ) break;;
+        	[Yy]* ) rm -rf /etc/update-motd.d; break;;
         	[Nn]* ) echo "OK, leaving now!"; exit;;
         	* ) echo "Please answer yes or no.";;
     	esac
