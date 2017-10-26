@@ -159,7 +159,7 @@ time=\`uptime | grep -ohe 'up .*' | sed 's/,/\ hours/g' | awk '{ printf \$2" "\$
 processes=\`ps aux | wc -l\`
 
 
-ip=\`ip -4 addr show \$(route | grep default | awk '{ print \$8 }') | grep "inet" | head -1 | awk '{print \$2}' | cut -f1 -d"/"\`
+ip=\`ip -4 addr show \$(ip route | grep default | awk '{ print \$5 }') | grep "inet" | head -1 | awk '{print \$2}' | cut -f1 -d"/"\`
 if [ ! valid_ip $ip ]; then
 	ip=\`ifconfig \$(route | grep default | awk '{ print \$8 }') | grep "netmask" | awk '{print \$2}'\`
 	if [ ! valid_ip $ip ]; then
