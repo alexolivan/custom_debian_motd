@@ -29,6 +29,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 # MA  02110-1301, USA.
 
+# A IPv4 validation function
+function valid_ip()
+{
+    local  ip=$1
+    local  stat=1
+
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        OIFS=$IFS
+        IFS='.'
+        ip=($ip)
+        IFS=$OIFS
+        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
+            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
+        stat=$?
+    fi
+    return $stat
+}
+
 # check and install figlet to enable ASCII art
 if ! hash figlet 2>/dev/null; then
 	echo "figlet command was not found in system, but we need it..."
@@ -139,7 +157,20 @@ swap_usage=\`free -m | awk '/Swap/ { printf("%3.1f%%", "exit !\$2;$3/\$2*100") }
 users=\`users | wc -w\`
 time=\`uptime | grep -ohe 'up .*' | sed 's/,/\ hours/g' | awk '{ printf \$2" "\$3 }'\`
 processes=\`ps aux | wc -l\`
-ip=\`ifconfig \$(route | grep default | awk '{ print \$8 }') | grep "inet addr" | awk -F: '{print \$2}' | awk '{print \$1}'\`
+
+
+ip=\`ip -4 addr show \$(route | grep default | awk '{ print \$8 }') | grep "inet" | head -1 | awk '{print \$2}' | cut -f1 -d"/"\`
+if [ ! valid_ip $ip ]; then
+	ip=\`ifconfig \$(route | grep default | awk '{ print \$8 }') | grep "netmask" | awk '{print \$2}'\`
+	if [ ! valid_ip $ip ]; then
+		ip=\`ifconfig \$(route | grep default | awk '{ print \$8 }') | grep "inet addr" | awk -F: '{print \$2}' | awk '{print \$1}'\`
+		if [ ! valid_ip $ip ]; then
+			ip="unknown IP"
+		fi
+	fi
+fi
+
+
 
 echo "System information as of: \$date"
 echo
