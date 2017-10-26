@@ -123,7 +123,7 @@ figlet ${MYBANNER}
 printf "%s\n" "\$(hostname -f)"
 printf "\n"
 
-printf "Welcome to %s (%s).\n" "$DISTRIB_DESCRIPTION" "\$(uname -r)"
+printf "Welcome to %s (%s).\n" "\$DISTRIB_DESCRIPTION" "\$(uname -r)"
 printf "\n"
 EOF
 
